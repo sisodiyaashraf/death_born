@@ -1,3 +1,4 @@
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/services.dart';
@@ -19,15 +20,27 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
     camera.viewfinder.zoom = 2.0;
 
     level = TestLevel();
-    await add(level);
+    await world.add(level);
 
-    player = PlayerComponent(position: Vector2(100, 300));
-    await add(player);
+    final playerSpawn = level.getPlayerSpawnPosition() ?? Vector2(100, 300);
+    player = PlayerComponent(position: playerSpawn);
+    await world.add(player);
 
-    companion = AlenoidNpc(position: Vector2(70, 260));
-    await add(companion);
+    level.spawnEnemies(world);
+
+    companion = AlenoidNpc(position: playerSpawn - Vector2(30, 40));
+    await world.add(companion);
 
     camera.follow(player);
+  }
+
+  void triggerScreenShake({double duration = 0.1, double intensity = 4.0}) {
+    camera.viewfinder.add(
+      MoveEffect.by(
+        Vector2(intensity, 0),
+        EffectController(duration: duration, alternate: true),
+      ),
+    );
   }
 
   @override
