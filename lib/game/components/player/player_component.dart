@@ -1,6 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/game_constants.dart';
@@ -8,7 +9,7 @@ import 'ground_component.dart';
 import 'player_sprites.dart';
 
 class PlayerComponent extends PositionComponent
-    with CollisionCallbacks, HasGameRef<FlameGame> {
+    with CollisionCallbacks, HasGameReference<FlameGame> {
   final Vector2 velocity = Vector2.zero();
   bool isGrounded = false;
   bool isFacingRight = true;
@@ -29,7 +30,7 @@ class PlayerComponent extends PositionComponent
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    await _playerSprites.loadAnimations(gameRef);
+    await _playerSprites.loadAnimations(game);
     _setPlayerState(PlayerState.idle);
   }
 
@@ -83,7 +84,8 @@ class PlayerComponent extends PositionComponent
     if (currentState == PlayerState.dead) return;
 
     if (currentState == PlayerState.attack || currentState == PlayerState.hurt) {
-      if (_currentTicker != null && _currentTicker!.done) {
+      final isDone = _currentTicker?.done() ?? false;
+      if (isDone) {
         _setPlayerState(PlayerState.idle);
       }
       return;
