@@ -4,7 +4,7 @@ class HealthComponent extends Component {
   double currentHealth;
   final double maxHealth;
   final void Function(double damage)? onDamaged;
-  final void Function()? onDeath;
+  void Function()? onDeath;
 
   HealthComponent({
     required this.maxHealth,
