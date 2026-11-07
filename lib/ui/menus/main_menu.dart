@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class MainMenu extends StatelessWidget {
   final VoidCallback onStartGame;
+  final VoidCallback? onPlayChapter2Cutscene;
 
-  const MainMenu({super.key, required this.onStartGame});
+  const MainMenu({
+    super.key,
+    required this.onStartGame,
+    this.onPlayChapter2Cutscene,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +43,41 @@ class MainMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 48),
                 ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 240),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.cyan.withValues(alpha: 0.2),
-                      side: const BorderSide(color: Colors.cyanAccent, width: 2),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      minimumSize: const Size(double.infinity, 48),
-                    ),
-                    onPressed: onStartGame,
-                    child: const Text(
-                      'START GAME',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  constraints: const BoxConstraints(maxWidth: 260),
+                  child: Column(
+                    children: [
+                      _buildButton('START GAME', Colors.cyan, onStartGame),
+                      if (onPlayChapter2Cutscene != null) ...[
+                        const SizedBox(height: 12),
+                        _buildButton('CHAPTER 2 INTRO', Colors.purpleAccent, onPlayChapter2Cutscene!),
+                      ],
+                    ],
                   ),
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(String label, Color color, VoidCallback onPressed) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color.withValues(alpha: 0.2),
+          side: BorderSide(color: color, width: 2),
+          padding: const EdgeInsets.symmetric(vertical: 14),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
