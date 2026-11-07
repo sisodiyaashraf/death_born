@@ -1,0 +1,31 @@
+{
+  "id": "chapter1_intro",
+  "title": "The Awakening",
+  "episodeNumber": "Chapter 1",
+  "panels": [
+    {
+      "imageAsset": "cutscene_ch1_1.png",
+      "duration": 4.0,
+      "subtitle": "Arther Johnson was dead. Murdered in cold blood in the dark alleys.",
+      "transition": "fade",
+      "startScale": 1.0,
+      "endScale": 1.15,
+      "startX": 0.0,
+      "startY": 0.0,
+      "endX": -10.0,
+      "endY": -10.0
+    },
+    {
+      "imageAsset": "cutscene_ch1_2.png",
+      "duration": 5.0,
+      "subtitle": "Then the Alenoid bound its essence to his dying heart, granting life anew.",
+      "transition": "glitch",
+      "startScale": 1.1,
+      "endScale": 1.0,
+      "startX": 10.0,
+      "startY": 0.0,
+      "endX": 0.0,
+      "endY": 0.0
+    }
+  ]
+}

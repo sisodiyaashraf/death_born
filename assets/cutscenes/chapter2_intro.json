@@ -1,0 +1,19 @@
+{
+  "id": "chapter2_intro",
+  "title": "Echoes of the Dead",
+  "episodeNumber": "Chapter 2",
+  "panels": [
+    {
+      "imageAsset": "cutscene_ch2_1.png",
+      "duration": 4.5,
+      "subtitle": "The graveyard loomed in heavy fog. Corruption's grip ran deep beneath the soil.",
+      "transition": "glitch",
+      "startScale": 1.0,
+      "endScale": 1.2,
+      "startX": 0.0,
+      "startY": 0.0,
+      "endX": 15.0,
+      "endY": -5.0
+    }
+  ]
+}
