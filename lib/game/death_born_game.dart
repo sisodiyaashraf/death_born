@@ -92,6 +92,8 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
   void stopMoveHorizontal() => player?.stopHorizontal();
   void triggerJump() => player?.jump();
   void triggerAttack() => player?.attack();
+  void triggerGraveStep() => player?.usePower('grave_step');
+  void triggerGraveStrike() => player?.usePower('grave_strike');
 
   @override
   KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
@@ -104,6 +106,9 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
         keysPressed.contains(LogicalKeyboardKey.arrowUp);
     final isAttack = keysPressed.contains(LogicalKeyboardKey.keyJ) ||
         keysPressed.contains(LogicalKeyboardKey.keyZ);
+    final isGraveStep = keysPressed.contains(LogicalKeyboardKey.keyE) ||
+        keysPressed.contains(LogicalKeyboardKey.shiftLeft);
+    final isGraveStrike = keysPressed.contains(LogicalKeyboardKey.keyQ);
 
     if (isLeft && !isRight) {
       player?.moveLeft();
@@ -115,6 +120,8 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
 
     if (isJump) player?.jump();
     if (isAttack) player?.attack();
+    if (isGraveStep) player?.usePower('grave_step');
+    if (isGraveStrike) player?.usePower('grave_strike');
 
     return KeyEventResult.handled;
   }

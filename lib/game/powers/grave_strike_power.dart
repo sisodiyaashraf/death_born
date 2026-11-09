@@ -31,7 +31,7 @@ class GraveStrikePower extends Power {
 
     HumanityService.instance.addCorruption(10.0);
 
-    final gameWorld = player.gameRef.world;
+    final gameWorld = player.game.world;
     gameWorld.add(ShadowTrailComponent(position: startPos, size: player.size));
     player.position = finalPos;
     gameWorld.add(ShadowTrailComponent(position: finalPos, size: player.size));
@@ -44,7 +44,7 @@ class GraveStrikePower extends Power {
     final maxX = start.x > end.x ? start.x : end.x;
     final pathSegment = Rect.fromLTRB(minX, start.y - 30, maxX, start.y + 30);
 
-    final enemies = player.gameRef.world.children.whereType<ThugComponent>();
+    final enemies = player.game.world.children.whereType<ThugComponent>();
     for (final enemy in enemies) {
       final enemyRect = Rect.fromLTWH(
         enemy.position.x - enemy.size.x / 2,
@@ -64,7 +64,7 @@ class GraveStrikePower extends Power {
     final direction = (targetX - start.x).sign;
     double currentX = start.x;
 
-    final grounds = player.gameRef.world.children.whereType<GroundComponent>();
+    final grounds = player.game.world.children.whereType<GroundComponent>();
     const step = 8.0;
     final totalSteps = (strikeDistance / step).abs().toInt();
 

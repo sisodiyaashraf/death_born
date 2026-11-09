@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 
 import '../components/player/ground_component.dart';
 import '../components/player/player_component.dart';
@@ -23,7 +24,7 @@ class GraveStepPower extends Power {
 
     final finalPos = _calculateFinalPosition(player, startPos, targetX);
 
-    final gameWorld = player.gameRef.world;
+    final gameWorld = player.game.world;
     gameWorld.add(ShadowTrailComponent(position: startPos, size: player.size));
 
     player.position = finalPos;
@@ -36,7 +37,7 @@ class GraveStepPower extends Power {
     final direction = (targetX - start.x).sign;
     double currentX = start.x;
 
-    final grounds = player.gameRef.world.children.whereType<GroundComponent>();
+    final grounds = player.game.world.children.whereType<GroundComponent>();
 
     const step = 8.0;
     final totalSteps = (teleportDistance / step).abs().toInt();
