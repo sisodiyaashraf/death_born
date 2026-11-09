@@ -12,11 +12,13 @@ class PowerController extends ChangeNotifier {
   ];
 
   Power? getPower(String id) {
-    return powers.firstWhere((p) => p.id == id, orElse: () => powers.first);
+    return powers.where((p) => p.id == id).firstOrNull;
   }
 
   bool triggerPower(String id, PlayerComponent player) {
     final power = getPower(id);
+    if (power == null) return false;
+
     final activated = power.tryActivate(player);
     if (activated) {
       notifyListeners();

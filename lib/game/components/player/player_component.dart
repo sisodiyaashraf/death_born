@@ -5,6 +5,7 @@ import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/game_constants.dart';
+import '../../powers/power_controller.dart';
 import '../combat/health_component.dart';
 import '../combat/hitbox_component.dart';
 import '../combat/hurtbox_component.dart';
@@ -19,6 +20,7 @@ class PlayerComponent extends PositionComponent
 
   late HealthComponent health;
   late HurtboxComponent hurtbox;
+  final PowerController powerController = PowerController();
 
   PlayerState currentState = PlayerState.idle;
   final PlayerSprites _playerSprites = PlayerSprites();
@@ -63,6 +65,8 @@ class PlayerComponent extends PositionComponent
 
   @override
   void update(double dt) {
+    powerController.update(dt);
+
     if (_hitStopTimer > 0) {
       _hitStopTimer -= dt;
       return;
@@ -118,6 +122,11 @@ class PlayerComponent extends PositionComponent
       _setPlayerState(PlayerState.attack);
       _spawnAttackHitbox();
     }
+  }
+
+  bool usePower(String powerId) {
+    if (currentState == PlayerState.dead) return false;
+    return powerController.triggerPower(powerId, this);
   }
 
   void _spawnAttackHitbox() {

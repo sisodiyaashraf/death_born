@@ -55,11 +55,17 @@ class OnScreenControls extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildActionButton(
+          label: 'STEP',
+          color: Colors.greenAccent,
+          onPressed: game.triggerGraveStep,
+        ),
+        const SizedBox(width: 8),
+        _buildActionButton(
           label: 'ATK',
           color: Colors.redAccent,
           onPressed: game.triggerAttack,
         ),
-        const SizedBox(width: 12),
+        const SizedBox(width: 8),
         _buildActionButton(
           label: 'JUMP',
           color: Colors.cyanAccent,
@@ -79,14 +85,14 @@ class OnScreenControls extends StatelessWidget {
       onTapUp: (_) => onTapUp(),
       onTapCancel: onTapUp,
       child: Container(
-        width: 56,
-        height: 56,
+        width: 52,
+        height: 52,
         decoration: BoxDecoration(
           color: Colors.black.withValues(alpha: 0.5),
           shape: BoxShape.circle,
           border: Border.all(color: Colors.white54, width: 2),
         ),
-        child: Icon(icon, color: Colors.white, size: 24),
+        child: Icon(icon, color: Colors.white, size: 22),
       ),
     );
   }
@@ -99,8 +105,8 @@ class OnScreenControls extends StatelessWidget {
     return GestureDetector(
       onTapDown: (_) => onPressed(),
       child: Container(
-        width: 56,
-        height: 56,
+        width: 52,
+        height: 52,
         decoration: BoxDecoration(
           color: color.withValues(alpha: 0.3),
           shape: BoxShape.circle,
@@ -111,7 +117,7 @@ class OnScreenControls extends StatelessWidget {
             label,
             style: TextStyle(
               color: color,
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.bold,
             ),
           ),
