@@ -16,12 +16,13 @@ class ThugComponent extends PositionComponent with HasGameReference<FlameGame> {
   late HurtboxComponent hurtbox;
   ThugState currentState = ThugPatrolState();
 
+  final void Function()? onDefeated;
   bool isFacingRight = false;
   double _flashTimer = 0.0;
   final Paint _paint = Paint()..color = Colors.redAccent;
   final Paint _flashPaint = Paint()..color = Colors.white;
 
-  ThugComponent({required Vector2 position})
+  ThugComponent({required Vector2 position, this.onDefeated})
       : super(position: position, size: Vector2(32, 48), anchor: Anchor.center);
 
   @override
@@ -31,7 +32,7 @@ class ThugComponent extends PositionComponent with HasGameReference<FlameGame> {
     health = HealthComponent(
       maxHealth: 50.0,
       onDamaged: (_) => _onDamaged(),
-      onDeath: () => setState(ThugDeadState()),
+      onDeath: () => _handleDeath(),
     );
     add(health);
 
@@ -42,6 +43,11 @@ class ThugComponent extends PositionComponent with HasGameReference<FlameGame> {
       onHit: (hit) => _onHitReceived(hit),
     );
     add(hurtbox);
+  }
+
+  void _handleDeath() {
+    setState(ThugDeadState());
+    onDefeated?.call();
   }
 
   void setState(ThugState newState) {

@@ -10,10 +10,12 @@ class GraveyardLevel extends Component with HasGameReference<FlameGame> {
 
   final void Function(Vector2 respawnPoint) onCheckpointActivated;
   final void Function(PlayerComponent player) onPlayerSpawned;
+  final void Function()? onThugDefeated;
 
   GraveyardLevel({
     required this.onCheckpointActivated,
     required this.onPlayerSpawned,
+    this.onThugDefeated,
   });
 
   @override
@@ -28,6 +30,7 @@ class GraveyardLevel extends Component with HasGameReference<FlameGame> {
       tmxPath: 'graveyard_map.tmx',
       onCheckpointActivated: onCheckpointActivated,
       onPlayerSpawned: onPlayerSpawned,
+      onThugDefeated: onThugDefeated,
     );
   }
 }

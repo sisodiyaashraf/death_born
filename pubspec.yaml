@@ -26,3 +26,5 @@ flutter:
     - assets/images/
     - assets/tiles/
     - assets/cutscenes/
+    - assets/dialogue/
+    - assets/audio/

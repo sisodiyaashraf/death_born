@@ -6,6 +6,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import '../components/enemies/thug/thug_component.dart';
 import '../components/player/ground_component.dart';
 import '../components/player/player_component.dart';
+import '../components/triggers/boss_arena_trigger.dart';
 import 'graveyard_checkpoint.dart';
 
 class LevelLoader {
@@ -18,6 +19,7 @@ class LevelLoader {
     required String tmxPath,
     required void Function(Vector2 respawnPoint) onCheckpointActivated,
     required void Function(PlayerComponent player) onPlayerSpawned,
+    void Function()? onThugDefeated,
   }) async {
     try {
       tiledMap = await TiledComponent.load(tmxPath, Vector2.all(32));
@@ -27,9 +29,9 @@ class LevelLoader {
       final tileMapHeight = (tiledMap!.tileMap.map.height * 32).toDouble();
       mapSize = Vector2(tileMapWidth, tileMapHeight);
 
-      _parseObjects(world, onCheckpointActivated, onPlayerSpawned);
+      _parseObjects(world, onCheckpointActivated, onPlayerSpawned, onThugDefeated);
     } catch (_) {
-      _loadFallbackLevel(world, onCheckpointActivated, onPlayerSpawned);
+      _loadFallbackLevel(world, onCheckpointActivated, onPlayerSpawned, onThugDefeated);
     }
 
     _applyCameraBounds(game);
@@ -39,6 +41,7 @@ class LevelLoader {
     World world,
     void Function(Vector2 point) onCheckpointActivated,
     void Function(PlayerComponent player) onPlayerSpawned,
+    void Function()? onThugDefeated,
   ) {
     if (tiledMap == null) return;
 
@@ -75,16 +78,30 @@ class LevelLoader {
           world.add(player);
           onPlayerSpawned(player);
         } else if (obj.type == 'thug') {
-          world.add(ThugComponent(position: Vector2(obj.x, obj.y)));
+          world.add(
+            ThugComponent(
+              position: Vector2(obj.x, obj.y),
+              onDefeated: onThugDefeated,
+            ),
+          );
         }
       }
     }
+
+    world.add(
+      BossArenaTrigger(
+        position: Vector2(600, 400),
+        size: Vector2(40, 80),
+        arenaCenter: Vector2(700, 300),
+      ),
+    );
   }
 
   void _loadFallbackLevel(
     World world,
     void Function(Vector2 point) onCheckpointActivated,
     void Function(PlayerComponent player) onPlayerSpawned,
+    void Function()? onThugDefeated,
   ) {
     world.add(GroundComponent(position: Vector2(0, 480), size: Vector2(960, 160)));
 
@@ -99,7 +116,20 @@ class LevelLoader {
     world.add(player);
     onPlayerSpawned(player);
 
-    world.add(ThugComponent(position: Vector2(400, 430)));
+    world.add(
+      ThugComponent(
+        position: Vector2(400, 430),
+        onDefeated: onThugDefeated,
+      ),
+    );
+
+    world.add(
+      BossArenaTrigger(
+        position: Vector2(600, 400),
+        size: Vector2(40, 80),
+        arenaCenter: Vector2(700, 300),
+      ),
+    );
   }
 
   void _applyCameraBounds(FlameGame game) {

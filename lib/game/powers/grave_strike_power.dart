@@ -1,12 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/services/humanity_service.dart';
 import '../components/enemies/thug/states/thug_dead_state.dart';
 import '../components/enemies/thug/thug_component.dart';
 import '../components/player/ground_component.dart';
 import '../components/player/player_component.dart';
 import 'effects/shadow_trail_component.dart';
-import 'humanity_service_stub.dart';
 import 'power_base.dart';
 
 class GraveStrikePower extends Power {

@@ -1,26 +1,45 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/save_game_model.dart';
 
-class GameSaveRepository {
-  static const String _humanityKey = 'humanity_meter';
-  static const String _highScoreKey = 'high_score';
+abstract class GameSaveRepository {
+  Future<SaveGameModel?> loadSaveGame();
+  Future<void> saveGame(SaveGameModel saveModel);
+  Future<bool> hasSaveGame();
+  Future<void> clearSaveGame();
+}
 
+class PreferencesGameSaveRepository implements GameSaveRepository {
+  static const String _saveKey = 'death_born_save_slot_1';
   final SharedPreferences _prefs;
 
-  GameSaveRepository(this._prefs);
+  PreferencesGameSaveRepository(this._prefs);
 
-  double getSavedHumanity() {
-    return _prefs.getDouble(_humanityKey) ?? 0.5;
+  @override
+  Future<SaveGameModel?> loadSaveGame() async {
+    final rawJson = _prefs.getString(_saveKey);
+    if (rawJson == null) return null;
+    try {
+      final map = json.decode(rawJson) as Map<String, dynamic>;
+      return SaveGameModel.fromJson(map);
+    } catch (_) {
+      return null;
+    }
   }
 
-  Future<void> saveHumanity(double value) async {
-    await _prefs.setDouble(_humanityKey, value.clamp(0.0, 1.0));
+  @override
+  Future<void> saveGame(SaveGameModel saveModel) async {
+    final rawJson = json.encode(saveModel.toJson());
+    await _prefs.setString(_saveKey, rawJson);
   }
 
-  int getHighScore() {
-    return _prefs.getInt(_highScoreKey) ?? 0;
+  @override
+  Future<bool> hasSaveGame() async {
+    return _prefs.containsKey(_saveKey);
   }
 
-  Future<void> saveHighScore(int score) async {
-    await _prefs.setInt(_highScoreKey, score);
+  @override
+  Future<void> clearSaveGame() async {
+    await _prefs.remove(_saveKey);
   }
 }

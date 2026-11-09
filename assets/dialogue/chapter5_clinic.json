@@ -1,0 +1,76 @@
+{
+  "id": "chapter5_clinic",
+  "title": "Clinic Confrontation",
+  "lines": [
+    {
+      "speakerId": "arther",
+      "speakerName": "Arther Johnson",
+      "text": "*Collapses against the clinic door, blood staining his jacket*",
+      "portraitKey": "portrait_arther"
+    },
+    {
+      "speakerId": "dr_rao",
+      "speakerName": "Dr. Rao",
+      "text": "Arther?! Good God... your pulse is erratic. What is that strange glow beneath your skin?",
+      "portraitKey": "portrait_rao"
+    },
+    {
+      "speakerId": "arther",
+      "speakerName": "Arther Johnson",
+      "text": "Just stitch me up, Doc. The Alenoid's energy will handle the rest.",
+      "portraitKey": "portrait_arther"
+    },
+    {
+      "speakerId": "dr_rao",
+      "speakerName": "Dr. Rao",
+      "text": "*Hands shaking as he applies antiseptics* You died in that alleyway. Everyone saw it...",
+      "portraitKey": "portrait_rao"
+    },
+    {
+      "speakerId": "mia",
+      "speakerName": "Mia",
+      "text": "He's back because he's tough, Doc. Look at his eyes—he isn't a monster.",
+      "portraitKey": "portrait_mia"
+    },
+    {
+      "speakerId": "arther",
+      "speakerName": "Arther Johnson",
+      "text": "Aren't you afraid of me, kid?",
+      "portraitKey": "portrait_arther"
+    },
+    {
+      "speakerId": "mia",
+      "speakerName": "Mia",
+      "text": "Kane's syndicate is what scares me. His enforcers shake down the whole neighborhood every night.",
+      "portraitKey": "portrait_mia"
+    },
+    {
+      "speakerId": "dr_rao",
+      "speakerName": "Dr. Rao",
+      "text": "They took our supply shipment yesterday. If they come back, this clinic won't survive.",
+      "portraitKey": "portrait_rao"
+    },
+    {
+      "speakerId": "arther",
+      "speakerName": "Arther Johnson",
+      "text": "Kane's men... they think they own these streets.",
+      "portraitKey": "portrait_arther",
+      "choices": [
+        {
+          "text": "I'll deal with Kane's enforcers. Nobody else hurts this neighborhood.",
+          "humanityImpact": 15.0
+        },
+        {
+          "text": "Not my problem. I have my own vengeance to settle.",
+          "humanityImpact": -20.0
+        }
+      ]
+    },
+    {
+      "speakerId": "mia",
+      "speakerName": "Mia",
+      "text": "Whatever you decide, Arther... just don't lose yourself to whatever brought you back.",
+      "portraitKey": "portrait_mia"
+    }
+  ]
+}

@@ -4,8 +4,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'components/bosses/enforcer/enforcer_boss.dart';
 import 'components/player/player_component.dart';
 import 'components/npcs/alenoid_npc.dart';
+import 'components/triggers/dialogue_trigger.dart';
 import 'levels/graveyard_level.dart';
 
 class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection {
@@ -13,9 +15,20 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
   late AlenoidNpc companion;
   late GraveyardLevel graveyardLevel;
 
+  final void Function()? onEnemyDefeatedChoice;
+  final void Function(String sceneId)? onTriggerDialogue;
+
   Vector2 lastCheckpointPosition = Vector2(100, 430);
   double _fadeAlpha = 0.0;
   bool _isRespawning = false;
+
+  DeathBornGame({
+    this.onEnemyDefeatedChoice,
+    this.onTriggerDialogue,
+  });
+
+  EnforcerBoss? get activeBoss =>
+      world.children.whereType<EnforcerBoss>().firstOrNull;
 
   @override
   Future<void> onLoad() async {
@@ -26,8 +39,20 @@ class DeathBornGame extends FlameGame with KeyboardEvents, HasCollisionDetection
     graveyardLevel = GraveyardLevel(
       onCheckpointActivated: (point) => lastCheckpointPosition = point,
       onPlayerSpawned: (p) => _setupPlayer(p),
+      onThugDefeated: onEnemyDefeatedChoice,
     );
     await world.add(graveyardLevel);
+
+    if (onTriggerDialogue != null) {
+      await world.add(
+        DialogueTrigger(
+          position: Vector2(250, 430),
+          size: Vector2(40, 60),
+          sceneId: 'chapter5_clinic',
+          onTriggered: (sceneId) => onTriggerDialogue!(sceneId),
+        ),
+      );
+    }
   }
 
   void _setupPlayer(PlayerComponent p) {
