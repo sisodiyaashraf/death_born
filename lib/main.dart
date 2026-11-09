@@ -101,6 +101,7 @@ class _DeathBornAppState extends State<DeathBornApp> {
                       children: [
                         GameWidget(game: _game),
                         HudOverlay(
+                          game: _game,
                           onPausePressed: () => setState(() => _isPaused = !_isPaused),
                         ),
                         OnScreenControls(game: _game),

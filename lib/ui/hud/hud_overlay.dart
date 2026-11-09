@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../data/models/player_stats.dart';
+import '../../game/death_born_game.dart';
+import '../../game/powers/power_controller.dart';
 
 class HudOverlay extends StatelessWidget {
   final VoidCallback onPausePressed;
+  final DeathBornGame? game;
 
-  const HudOverlay({super.key, required this.onPausePressed});
+  const HudOverlay({
+    super.key,
+    required this.onPausePressed,
+    this.game,
+  });
 
   @override
   Widget build(BuildContext context) {
     final stats = context.watch<PlayerStats>();
     final healthFraction = (stats.health / stats.maxHealth).clamp(0.0, 1.0);
+    final powerController = game?.player?.powerController;
 
     return SafeArea(
       child: Padding(
@@ -32,6 +41,10 @@ class HudOverlay extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 _buildCorruptionBar(stats.humanityMeter),
+                if (powerController != null) ...[
+                  const SizedBox(height: 10),
+                  _buildPowerCooldowns(powerController),
+                ],
               ],
             ),
             IconButton(
@@ -41,6 +54,59 @@ class HudOverlay extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPowerCooldowns(PowerController controller) {
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        return Row(
+          children: controller.powers.map((power) {
+            final cdProgress = power.cooldownProgress;
+            final isReady = power.isReady;
+
+            return Container(
+              margin: const EdgeInsets.only(right: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: isReady ? Colors.greenAccent : Colors.grey,
+                  width: 1.0,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    power.name,
+                    style: TextStyle(
+                      color: isReady ? Colors.white : Colors.white54,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  if (!isReady) ...[
+                    const SizedBox(width: 4),
+                    SizedBox(
+                      width: 10,
+                      height: 10,
+                      child: CircularProgressIndicator(
+                        value: cdProgress,
+                        strokeWidth: 2,
+                        color: Colors.greenAccent,
+                        backgroundColor: Colors.white24,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+          }).toList(),
+        );
+      },
     );
   }
 
